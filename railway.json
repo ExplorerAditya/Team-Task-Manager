@@ -1,5 +1,3 @@
-# railway.json — Railway will auto-detect Node and use scripts from package.json
-# postinstall runs the client build, then `npm start` boots the server.
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
