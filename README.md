@@ -3,7 +3,7 @@
 A full-stack team task manager with project workspaces, role-based access control, and a clean dashboard. Built as a hiring assessment with the goal of being deployment-ready, well-structured, and pleasant to use.
 
 **Live demo:** https://team-task-manager-production-91fd.up.railway.app
-**Demo video:** _add Loom URL here after recording_
+**Demo video:** "video url will be uploaded here after i record it completely".
 
 ---
 
