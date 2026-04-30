@@ -74,7 +74,7 @@ team-task-manager/
 │   ├── vite.config.js
 │   ├── tailwind.config.js
 │   └── package.json
-├── package.json                  # root scripts; postinstall builds client
+├── package.json                  # root scripts; build script for Railway
 ├── railway.json                  # Railway deployment config
 ├── .env.example
 └── README.md
@@ -96,8 +96,6 @@ git clone <your-repo-url>
 cd team-task-manager
 
 # 2. Install dependencies (root + client)
-npm install        # also runs postinstall which installs/builds client
-# OR for development:
 npm run install-all
 
 # 3. Set up environment
@@ -119,7 +117,7 @@ npm run server
 
 **Build for production locally:**
 ```bash
-npm run build       # builds client into client/dist
+npm run build       # installs client deps and builds into client/dist
 NODE_ENV=production npm start
 # Then open http://localhost:5000
 ```
@@ -174,7 +172,7 @@ All authenticated endpoints expect `Authorization: Bearer <token>`.
 
 ## Deployment to Railway
 
-Railway runs this as a **single service**: `postinstall` builds the React app, `npm start` runs the Express server which serves the API on `/api/*` and the built React app on everything else.
+Railway runs this as a **single service**: `npm run build` installs client dependencies and builds the React app, `npm start` runs the Express server which serves the API on `/api/*` and the built React app on everything else.
 
 ### Step 1 — MongoDB Atlas (free tier)
 1. Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas), create a free M0 cluster.
@@ -196,16 +194,16 @@ git push -u origin main
 ```
 
 ### Step 3 — Deploy to Railway
-1. Go to [railway.app](https://railway.app), sign in with GitHub.
+1. Go to [railway.com](https://railway.com), sign in with GitHub.
 2. **New Project** → **Deploy from GitHub repo** → pick this repo.
 3. After it spins up, go to the service → **Variables** → add:
    - `MONGO_URI` = your Atlas connection string from Step 1
-   - `JWT_SECRET` = a long random string (e.g. `openssl rand -hex 32`)
+   - `JWT_SECRET` = a long random string
    - `NODE_ENV` = `production`
-4. **Settings** → **Networking** → click **Generate Domain**.
+4. **Settings** → **Networking** → click **Generate Domain**. Set the target port to match the `PORT` Railway injects (visible in deploy logs — usually `8080`).
 5. Wait for the deploy to finish. Visit your Railway URL — the app should be live.
 
-If the build fails, check the deploy logs. Most common issues: bad `MONGO_URI` or the Atlas IP allowlist not set to `0.0.0.0/0`.
+If the build fails, check the deploy logs. Most common issues: bad `MONGO_URI`, the Atlas IP allowlist not set to `0.0.0.0/0`, or the public networking port not matching the runtime port.
 
 ---
 
